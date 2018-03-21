@@ -21,20 +21,13 @@ you may just define the forward path of the computational graph with the node cl
     x3 = node('input', None)
     c1 = node('const', None)
     c2 = node('const', None)
-    c3 = node('const', None)
-    h1 = node('+', x1, c1)
-    h2 = node('sin', h1)
-    h3 = node('*', x2, c2)
-    h4 = node('cos', h3)
-    h5 = node('log', x3)
-    h6 = node('tan', h5)
-    h7 = node('sin', x3)
-    h8 = node('+', h7, c3)
-    h9 = node('exp', h8)
-    h10 = node('+', h2, h4)
-    h11 = node('*', h10, h6)
-    h12 = node('*', h10, h9)
-    o = node('+', h11, h12, is_output = True)
+    fac1 = node('+', node('sin', node('+', x1, c1)), 
+                        node('cos', node('*', c2, x2)))
+    fac2 = node('tan', node('log', x3))
+    fac3 = node('+', node('sin', node('+', x2, c1)), 
+                        node('cos', node('*', c2, x1)))
+    fac4 = node('exp', node('+', c1, node('sin', x3)))
+    o = node('+', node('*', fac1, fac2), node('*', fac3, fac4), is_output = True)
 
 Then, you may run the graph with the graph class:
 
